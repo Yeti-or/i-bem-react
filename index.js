@@ -7,6 +7,9 @@ var MOD_DELIM = '_',
     NAME_PATTERN = '[a-zA-Z0-9-]+';
 
 function BemWrapper(componentData) {
+    console.log('componentData');
+    console.log(componentData);
+
     this.component = enzyme.mount(componentData);
     this._name = componentData.type.displayName;
     this.domElem = this.component.find('.' + this._name);
@@ -53,7 +56,22 @@ BemWrapper.prototype.getMod = function(elem, modName) {
     throw new Error('ups no elems right now');
     //return this._getElemMod(modName, elem);
 };
+ 
+BemWrapper.prototype.getMods = function(elem) {
+    var hasElem = elem && typeof elem != 'string',
+        modCache = this._modCache,
+        modNames = [].slice.call(arguments, hasElem ? 1 : 0);
 
+    return !modNames.length ?
+        modCache :
+        modNames.reduce(function(res, mod) {
+            if(mod in modCache) {
+                res[mod] = modCache[mod];
+            }
+
+            return res;
+        }, {});
+};
 BemWrapper.prototype._extractModVal = function(modName, elem, elemName) {
     var domNode = (elem || this.domElem).get(0),
         matches;
