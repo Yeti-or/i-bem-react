@@ -9,12 +9,14 @@ var MOD_DELIM = '_',
 function BemWrapper(componentData) {
     console.log('componentData');
     console.log(componentData);
+    console.log('-------------');
 
     this.component = enzyme.mount(componentData);
+    this.__data = componentData;
     this._name = componentData.type.displayName;
     this.domElem = this.component.find('.' + this._name);
 
-    this._modCache = {};
+    this._modCache = componentData.props || {};
     this.__self = BemWrapper;
     this.__self._name = this._name;
 };
@@ -72,6 +74,7 @@ BemWrapper.prototype.getMods = function(elem) {
             return res;
         }, {});
 };
+
 BemWrapper.prototype._extractModVal = function(modName, elem, elemName) {
     var domNode = (elem || this.domElem).get(0),
         matches;
