@@ -139,7 +139,7 @@ BemWrapper._extractElemNameFrom = function(elem) {
 
     var matches = elem[0].className.match(this._buildElemNameRE());
     return matches ? matches[1] : undefined;
-}
+};
 
 BemWrapper._buildModClassPrefix = function(modName, elem) {
     return this._name +
@@ -147,6 +147,6 @@ BemWrapper._buildModClassPrefix = function(modName, elem) {
                ELEM_DELIM + (typeof elem === 'string' ? elem : this._extractElemNameFrom(elem)) :
                '') +
            MOD_DELIM + modName + MOD_DELIM;
-}
+};
 
 module.exports = BemWrapper;
