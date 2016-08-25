@@ -1,25 +1,27 @@
 'use strict';
 
 var enzyme = require('enzyme');
+var React = require('react');
 
 var MOD_DELIM = '_',
     ELEM_DELIM = '__',
     NAME_PATTERN = '[a-zA-Z0-9-]+';
 
 function BemWrapper(componentData) {
-    var component = this.__self._blockMap[componentData.block];
-    componentData = React.createElement(component, componentData.mods);
+    this.__self = BemWrapper;
+    this._class = this.__self._blockMap[componentData.block];
+
     console.log('componentData');
     console.log(componentData);
     console.log('-------------');
 
-    this.component = enzyme.mount(componentData);
     this._data = componentData;
-    this._name = componentData.type.displayName;
+
+    this.component = enzyme.mount(React.createElement(this._class, this._data.mods));
+    this._name = this.component.type.displayName;
     this.domElem = this.component.find('.' + this._name);
 
-    this._modCache = Object.assign({}, componentData.props);
-    this.__self = BemWrapper;
+    this._modCache = Object.assign({}, this._data.mods);
     this.__self._name = this._name;
 };
 
@@ -47,9 +49,9 @@ BemWrapper.prototype.setMod = function(elem, modName, modVal) {
     }
 
     _this._modCache[modName] = modVal;
-    _this._data.props = Object.assign({}, _this._data.props, _this._modCache);
+    _this._data.mods = Object.assign({}, _this._data.mods, _this._modCache);
 
-    this.component = enzyme.mount(_this._data);
+    this.component = enzyme.mount(React.createElement(this._class, this._data.mods));
     this.domElem = this.component.find('.' + this._name);
 
     return _this;
