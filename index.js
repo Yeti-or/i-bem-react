@@ -151,4 +151,10 @@ BemWrapper._buildModClassPrefix = function(modName, elem) {
            MOD_DELIM + modName + MOD_DELIM;
 };
 
+BemWrapper.DOM = BemWrapper;
+
+BemWrapper.DOM.destruct = function(domElem) {
+    domElem.root.unmount();
+}
+
 module.exports = BemWrapper;
