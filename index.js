@@ -123,6 +123,7 @@ BemWrapper.prototype._extractModVal = function(modName, elem, elemName) {
 };
 
 
+// STATIC
 BemWrapper._buildModValRE = function(modName, elem, quantifiers) {
     return new RegExp(
         '(\\s|^)' + this._buildModClassPrefix(modName, elem) + '(' + NAME_PATTERN + ')(?=\\s|$)',
