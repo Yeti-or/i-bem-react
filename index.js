@@ -48,6 +48,7 @@ BemWrapper.prototype.setMod = function(elem, modName, modVal) {
         return _this;
     }
 
+    // TODO: remove empty strings here
     _this._modCache[modName] = modVal;
     _this._data.mods = Object.assign({}, _this._data.mods, _this._modCache);
 
