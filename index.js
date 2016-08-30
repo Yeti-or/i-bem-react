@@ -58,6 +58,15 @@ BemWrapper.prototype.setMod = function(elem, modName, modVal) {
     return _this;
 }
 
+BemWrapper.prototype.delMod = function(elem, modName) {
+    if(!modName) {
+        modName = elem;
+        elem = undefined;
+    }
+
+    return this.setMod(elem, modName, '');
+};
+
 BemWrapper.prototype.hasMod = function(elem, modName, modVal) {
     var len = arguments.length,
         invert = false;
@@ -95,7 +104,7 @@ BemWrapper.prototype.getMod = function(elem, modName) {
     throw new Error('ups no elems right now');
     //return this._getElemMod(modName, elem);
 };
- 
+
 BemWrapper.prototype.getMods = function(elem) {
     var hasElem = elem && typeof elem != 'string',
         modCache = this._modCache,
