@@ -91,6 +91,12 @@ describe('mods', () => {
         });
     });
 
+    describe('delMod', function() {
+        it('should set mod\'s value to \'\'', function() {
+           expect(block.delMod('mod1').getMod('mod1')).to.eql('');
+        });
+    });
+
     it('shoule hasMod', () => {
         expect(block.hasMod('hovered')).to.eql(false);
     });
