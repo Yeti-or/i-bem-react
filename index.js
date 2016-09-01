@@ -3,13 +3,15 @@
 var enzyme = require('enzyme');
 var React = require('react');
 
+var inherit = require('inherit');
+
 var MOD_DELIM = '_',
     ELEM_DELIM = '__',
     NAME_PATTERN = '[a-zA-Z0-9-]+';
 
 function BemWrapper(componentData) {
     this.__self = BemWrapper;
-    this._class = this.__self._blockMap[componentData.block];
+    this._class = this.__self.components[componentData.block];
 
     this._data = componentData;
 
@@ -21,9 +23,46 @@ function BemWrapper(componentData) {
     this.__self._name = this._name;
 };
 
-BemWrapper._blockMap = {};
+// storage for bem declarations
+BemWrapper.blocks = {};
+// storage for react classes
+BemWrapper.components = {};
+
+BemWrapper.create = function(block, params) {
+    //TODO: params ??
+    typeof block == 'string' && (block = {block: block});
+
+    var blockDecl = this.blocks[block.block];
+    if (!blockDecl) {
+        blockDecl = BemWrapper;
+    }
+
+    return new blockDecl(block);
+};
+
 BemWrapper.register = function(blockName, componentClass) {
-    this._blockMap[blockName] = componentClass;
+    this.components[blockName] = componentClass;
+};
+
+BemWrapper.unregister = function(blockName) {
+    delete this.components[blockName];
+};
+
+BemWrapper.decl = function(decl, props, staticProps) {
+    if(typeof decl == 'string') {
+        decl = {block: decl};
+    } else if(decl.name) {
+        decl.block = decl.name;
+    }
+    // TODO: think about it
+
+    var component = this.components[decl.block];
+    if (!component) {
+        component = React.createClass(Object.assign({render: () => null}, props));
+        this.components[decl.block] = component;
+    }
+
+    return (this.blocks[decl.block] = inherit(BemWrapper, props, staticProps));
 };
 
 BemWrapper.prototype.setMod = function(elem, modName, modVal) {

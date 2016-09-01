@@ -5,14 +5,29 @@ var BEM = require('..');
 
 var ReactComponent = require('./component.js');
 
-BEM.register('component', ReactComponent);
+describe('i-bem-react', () => {
 
-describe('simple', () => {
+describe('create', function() {
+    it('should return instance of block', function() {
+        var block = BEM.decl('block', {}),
+            instance = BEM.create('block');
+
+        expect(instance instanceof block).to.be.true;
+        delete BEM.blocks.block;
+    });
+});
+
+describe('mods', () => {
 
     var component;
 
     beforeEach(() => {
+        BEM.register('component', ReactComponent);
         component = new BEM({block: 'component'});
+    });
+
+    afterEach(() => {
+        BEM.unregister('component');
     });
 
     it('should getMod', () => {
@@ -27,5 +42,7 @@ describe('simple', () => {
         component.setMod('hovered');
         expect(component.hasMod('hovered')).to.be.true;
     });
+
+});
 
 });
