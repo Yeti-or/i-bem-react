@@ -57,13 +57,42 @@ describe('mods', () => {
         });
     });
 
-    it('shoule hasMod', () => {
-        expect(block.hasMod('hovered')).to.be.false;
+    describe('setMod', function() {
+        it('should update mod value', function() {
+            block.setMod('mod1', 'val2');
+            expect(block.getMod('mod1')).to.eql('val2');
+        });
+
+        // TODO: 0.3 compatibility
+        xit('should update boolean mod value', function() {
+            block
+                .setMod('mod1', true)
+                .getMod('mod1').should.be.true;
+
+            expect(block.setMod('mod1', true).getMod('mod1')).to.eql(true);
+
+            block
+                .setMod('mod1', false)
+                .getMod('mod1').should.be.equal('');
+
+            expect(block.setMod('mod1', false).getMod('mod1')).to.eql(false);
+
+            block
+                .setMod('mod1')
+                .getMod('mod1').should.be.true;
+
+            expect(block.setMod('mod1').getMod('mod1')).to.eql(true);
+        });
+
+        // TODO: 0.3 compatibility
+        xit('should cast non-boolean mod value to string', function() {
+            block.setMod('mod1', 1);
+            expect(block.getMod('mod1')).to.eql('1');
+        });
     });
 
-    it('should setMod', () => {
-        block.setMod('hovered');
-        expect(block.hasMod('hovered')).to.be.true;
+    it('shoule hasMod', () => {
+        expect(block.hasMod('hovered')).to.eql(false);
     });
 
 });
