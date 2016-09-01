@@ -19,28 +19,51 @@ describe('create', function() {
 
 describe('mods', () => {
 
-    var component;
+    var block;
 
-    beforeEach(() => {
-        BEM.register('component', ReactComponent);
-        component = new BEM({block: 'component'});
+    beforeEach(function() {
+        BEM.decl('block', {});
+        block = BEM.create({block: 'block', mods: {mod1: 'val1', mod2: true, mod3: false}});
     });
 
-    afterEach(() => {
-        BEM.unregister('component');
+    afterEach(function() {
+        delete BEM.blocks.block;
     });
 
-    it('should getMod', () => {
-        expect(component.getMod('hovered')).to.eql('');
+    describe('getMods', function() {
+        it('should return specified mods', function() {
+            expect(block.getMods('mod1', 'mod2', 'mod3')).to.eql({mod1: 'val1', mod2: true, mod3: false});
+        });
+    });
+
+    describe('getMod', function() {
+        it('should not drop cache ISL-2432', function() {
+            block.getMods();
+            expect(block.getMod('mod1')).to.eql('val1');
+        });
+
+        it('should return current mod\'s value', function() {
+            expect(block.getMod('mod1')).to.eql('val1');
+        });
+
+        // TODO: 0.3 compatibility
+        xit('should return current boolean mod\'s value', function() {
+            expect(block.getMod('mod2')).to.be.true;
+            expect(block.getMod('mod3')).to.eql('');
+        });
+
+        it('should return \'\' for undefined mod', function() {
+            expect(block.getMod('mod4')).to.eql('');
+        });
     });
 
     it('shoule hasMod', () => {
-        expect(component.hasMod('hovered')).to.be.false;
+        expect(block.hasMod('hovered')).to.be.false;
     });
 
     it('should setMod', () => {
-        component.setMod('hovered');
-        expect(component.hasMod('hovered')).to.be.true;
+        block.setMod('hovered');
+        expect(block.hasMod('hovered')).to.be.true;
     });
 
 });
