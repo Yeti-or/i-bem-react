@@ -97,8 +97,43 @@ describe('mods', () => {
         });
     });
 
-    it('shoule hasMod', () => {
-        expect(block.hasMod('hovered')).to.eql(false);
+    describe('hasMod', function() {
+        it('should return true for matching mod\'s value', function() {
+            expect(block.hasMod('mod1', 'val1')).to.eql(true);
+        });
+
+        it('should return false for non-matching mod\'s value', function() {
+            expect(block.hasMod('mod1', 'val2')).to.eql(false);
+        });
+
+        it('should return false for undefined mod\'s value', function() {
+            expect(block.hasMod('mod2', 'val2')).to.eql(false);
+        });
+
+        it('in short form should return true for non-empty mod\'s value', function() {
+            expect(block.hasMod('mod1')).to.eql(true);
+        });
+
+        it('in short form should return true for empty mod\'s value', function() {
+            expect(block.setMod('mod1', '').hasMod('mod1')).to.eql(false);
+        });
+
+        // TODO: 0.3 compatibility
+        xit('should treat defined non-boolean mod value as a string', function() {
+            expect(block.setMod('mod1', 1).hasMod('mod1', 1)).to.eql(true);
+            expect(block.hasMod('mod1', '1')).to.eql(true);
+            expect(block.setMod('mod1', '2').hasMod('mod1', 2)).to.eql(true);
+        });
+
+        it('in short form should return true for undefined mod', function() {
+            expect(block.hasMod('mod4')).to.eql(false);
+        });
+
+        // TODO: 0.3 compatibility
+        xit('should return true for matching boolean mod\'s value', function() {
+            expect(block.setMod('mod1', true).hasMod('mod1')).to.eql(true, 'setMod().hasMod() return true');
+            expect(block.hasMod('mod1', true)).to.eql(true, 'hasMod return true');
+        });
     });
 
 });
