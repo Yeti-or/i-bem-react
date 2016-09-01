@@ -29,15 +29,15 @@ BemWrapper.blocks = {};
 BemWrapper.components = {};
 
 BemWrapper.create = function(block, params) {
-    //TODO: params ??
+    // TODO: params ??
     typeof block == 'string' && (block = {block: block});
 
-    var blockDecl = this.blocks[block.block];
-    if (!blockDecl) {
-        blockDecl = BemWrapper;
+    var BlockDecl = this.blocks[block.block];
+    if(!BlockDecl) {
+        BlockDecl = BemWrapper;
     }
 
-    return new blockDecl(block);
+    return new BlockDecl(block);
 };
 
 BemWrapper.register = function(blockName, componentClass) {
@@ -57,7 +57,7 @@ BemWrapper.decl = function(decl, props, staticProps) {
     // TODO: think about it
 
     var component = this.components[decl.block];
-    if (!component) {
+    if(!component) {
         component = React.createClass(Object.assign({render: () => null}, props));
         this.components[decl.block] = component;
     }
@@ -91,7 +91,7 @@ BemWrapper.prototype.setMod = function(elem, modName, modVal) {
     this.domElem = this.component.find('.' + this._name);
 
     return _this;
-}
+};
 
 BemWrapper.prototype.delMod = function(elem, modName) {
     if(!modName) {
@@ -137,7 +137,7 @@ BemWrapper.prototype.getMod = function(elem, modName) {
     }
 
     throw new Error('ups no elems right now');
-    //return this._getElemMod(modName, elem);
+    // return this._getElemMod(modName, elem);
 };
 
 BemWrapper.prototype.getMods = function(elem) {
