@@ -19,4 +19,4 @@ class Foo extends React.Component {
 Foo.propTypes = propTypes;
 Foo.defaultProps = defaultProps;
 
-export default Foo;
+module.exports = Foo;

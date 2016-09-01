@@ -11,10 +11,6 @@ function BemWrapper(componentData) {
     this.__self = BemWrapper;
     this._class = this.__self._blockMap[componentData.block];
 
-    console.log('componentData');
-    console.log(componentData);
-    console.log('-------------');
-
     this._data = componentData;
 
     this.component = enzyme.mount(React.createElement(this._class, this._data.mods));
@@ -25,9 +21,9 @@ function BemWrapper(componentData) {
     this.__self._name = this._name;
 };
 
-BemWrapper.registerComponent = function(block, component) {
-    this._blockMap = this._blockMap || {};
-    this._blockMap[block] = component;
+BemWrapper._blockMap = {};
+BemWrapper.register = function(blockName, componentClass) {
+    this._blockMap[blockName] = componentClass;
 };
 
 BemWrapper.prototype.setMod = function(elem, modName, modVal) {

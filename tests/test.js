@@ -3,28 +3,27 @@ var expect = require('chai').expect;
 var React = require('react');
 var BEM = require('..');
 
-var ReactComponent = require('./component.js').default;
+var ReactComponent = require('./component.js');
 
-BEM.registerComponent('component', ReactComponent);
+BEM.register('component', ReactComponent);
 
 describe('simple', () => {
 
     var component;
 
     beforeEach(() => {
-        debugger
         component = new BEM({block: 'component'});
     });
 
-    it('should', () => {
-        expect('true').to.eql('true');
+    it('should getMod', () => {
+        expect(component.getMod('hovered')).to.eql('');
     });
 
-    it('should getMod', () => {
+    it('shoule hasMod', () => {
         expect(component.hasMod('hovered')).to.be.false;
     });
 
-    it('should getMod', () => {
+    it('should setMod', () => {
         component.setMod('hovered');
         expect(component.hasMod('hovered')).to.be.true;
     });
