@@ -136,6 +136,36 @@ describe('mods', () => {
         });
     });
 
+    describe('toggleMod', function() {
+        it('should switch mod\'s values', function() {
+            expect(block.toggleMod('mod1', 'val1', 'val2').hasMod('mod1', 'val2')).to.eql(true);
+            expect(block.toggleMod('mod1', 'val1', 'val2').hasMod('mod1', 'val1')).to.eql(true);
+        });
+
+        it('should switch mod\'s value if "modVal2" param omited', function() {
+            expect(block.toggleMod('mod1', 'val1').hasMod('mod1')).to.eql(false, 'should return false');
+            expect(block.toggleMod('mod1', 'val1').hasMod('mod1')).to.eql(true, 'should return true');
+        });
+
+        it('should switch boolean mod\'s value', function() {
+            expect(block.toggleMod('mod2').hasMod('mod2')).to.eql(true);
+        });
+
+        it('should switch mod\'s values according to "condition" param', function() {
+            expect(block.toggleMod('mod1', 'val1', 'val2', true).hasMod('mod1', 'val1'))
+                .to.eql(true, 'should set value "val1", toggleMod true');
+
+            expect(block.toggleMod('mod1', 'val1', 'val2', false).hasMod('mod1', 'val2'))
+                .to.eql(true, 'should set value "val2", toggleMod false');
+        });
+
+        it('should switch mod\'s value according to "condition" param if "modVal2" param omited', function() {
+            expect(block.toggleMod('mod1', 'val1', true).hasMod('mod1', 'val1')).to.eql(true, 'should return true');
+            expect(block.toggleMod('mod1', 'val1', false).hasMod('mod1')).to.eql(false, 'should return false');
+        });
+    });
+
+
 });
 
 });

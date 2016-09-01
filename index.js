@@ -102,6 +102,33 @@ BemWrapper.prototype.delMod = function(elem, modName) {
     return this.setMod(elem, modName, '');
 };
 
+BemWrapper.prototype.toggleMod = function(elem, modName, modVal1, modVal2, condition) {
+    if(typeof elem == 'string') { // If this is a block
+        condition = modVal2;
+        modVal2 = modVal1;
+        modVal1 = modName;
+        modName = elem;
+        elem = undefined;
+    }
+    if(typeof modVal2 == 'undefined') {
+        modVal2 = '';
+    } else if(typeof modVal2 == 'boolean') {
+        condition = modVal2;
+        modVal2 = '';
+    }
+
+    var modVal = this.getMod(elem, modName);
+    (modVal == modVal1 || modVal == modVal2) &&
+        this.setMod(
+            elem,
+            modName,
+            typeof condition === 'boolean' ?
+                (condition ? modVal1 : modVal2) :
+                this.hasMod(elem, modName, modVal1) ? modVal2 : modVal1);
+
+    return this;
+};
+
 BemWrapper.prototype.hasMod = function(elem, modName, modVal) {
     var len = arguments.length,
         invert = false;
