@@ -23,6 +23,23 @@ function BemWrapper(componentData) {
     this.__self._name = this._name;
 };
 
+BemWrapper.decl = function(decl, props, staticProps) {
+    if(typeof decl == 'string') {
+        decl = {block: decl};
+    } else if(decl.name) {
+        decl.block = decl.name;
+    }
+    // TODO: think about it
+
+    var component = this.components[decl.block];
+    if(!component) {
+        component = React.createClass(Object.assign({render: () => null}, props));
+        this.components[decl.block] = component;
+    }
+
+    return (this.blocks[decl.block] = inherit(BemWrapper, props, staticProps));
+};
+
 // storage for bem declarations
 BemWrapper.blocks = {};
 // storage for react classes
@@ -46,23 +63,6 @@ BemWrapper.register = function(blockName, componentClass) {
 
 BemWrapper.unregister = function(blockName) {
     delete this.components[blockName];
-};
-
-BemWrapper.decl = function(decl, props, staticProps) {
-    if(typeof decl == 'string') {
-        decl = {block: decl};
-    } else if(decl.name) {
-        decl.block = decl.name;
-    }
-    // TODO: think about it
-
-    var component = this.components[decl.block];
-    if(!component) {
-        component = React.createClass(Object.assign({render: () => null}, props));
-        this.components[decl.block] = component;
-    }
-
-    return (this.blocks[decl.block] = inherit(BemWrapper, props, staticProps));
 };
 
 BemWrapper.prototype.setMod = function(elem, modName, modVal) {
@@ -206,8 +206,7 @@ BemWrapper.prototype.elem = function() {
  */
 BemWrapper.prototype.afterCurrentEvent = function(fn, ctx) {
     this.__self.afterCurrentEvent(fn.bind(ctx || this));
-},
-
+};
 
 // STATIC
 
@@ -244,7 +243,6 @@ BemWrapper.DOM = BemWrapper;
 BemWrapper.DOM.destruct = function(domElem) {
     domElem.root.unmount();
 };
-
 
 /**
  * Storage for deferred functions
