@@ -206,5 +206,4 @@ describe('afterCurrentEvent', function() {
     });
 });
 
-
 });

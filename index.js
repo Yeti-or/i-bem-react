@@ -243,7 +243,7 @@ BemWrapper.DOM = BemWrapper;
 
 BemWrapper.DOM.destruct = function(domElem) {
     domElem.root.unmount();
-}
+};
 
 
 /**
