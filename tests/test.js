@@ -167,4 +167,44 @@ describe('mods', () => {
 
 });
 
+describe('afterCurrentEvent', function() {
+    var block;
+    beforeEach(function() {
+        BEM.decl('block', {});
+        block = BEM.create({block: 'block', mods: {mod1: 'val1'}});
+    });
+    afterEach(function() {
+        delete BEM.blocks.block;
+    });
+
+    it('should call callback asynchronously', function(done) {
+        var isAsync = false;
+        block.afterCurrentEvent(function() {
+            expect(isAsync).to.eql(true);
+            done();
+        });
+        isAsync = true;
+    });
+
+    it('should call callback with block\'s context', function(done) {
+        block.afterCurrentEvent(function() {
+            expect(this).to.eql(block);
+            done();
+        });
+    });
+
+    // TODO: 0.3 compatibility
+    xit('should not call callback if block destructed', function(done) {
+        var spy = jasmine.createSpy('spy');
+        block.afterCurrentEvent(spy);
+        block.destruct();
+
+        setTimeout(function() {
+            expect(spy).not.toHaveBeenCalled();
+            done();
+        }, 0);
+    });
+});
+
+
 });

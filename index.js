@@ -198,6 +198,17 @@ BemWrapper.prototype.elem = function() {
     console.log('not implemented yet');
 };
 
+/**
+ * Executes the function in the context of the block, after the "current event"
+ * @protected
+ * @param {Function} fn
+ * @param {Object} [ctx] Context
+ */
+BemWrapper.prototype.afterCurrentEvent = function(fn, ctx) {
+    this.__self.afterCurrentEvent(fn.bind(ctx || this));
+},
+
+
 // STATIC
 
 BemWrapper._buildModValRE = function(modName, elem, quantifiers) {
@@ -233,5 +244,37 @@ BemWrapper.DOM = BemWrapper;
 BemWrapper.DOM.destruct = function(domElem) {
     domElem.root.unmount();
 }
+
+
+/**
+ * Storage for deferred functions
+ * @private
+ * @type {Array}
+ */
+var afterCurrentEventFns = [];
+
+/**
+ * Adds a function to the queue for executing after the "current event"
+ * @static
+ * @protected
+ * @param {Function} fn
+ * @param {Object} ctx
+ */
+BemWrapper.afterCurrentEvent = function(fn, ctx) {
+    afterCurrentEventFns.push({fn: fn, ctx: ctx}) == 1 &&
+        setTimeout(this._runAfterCurrentEventFns, 0);
+};
+
+/**
+ * Executes the queue
+ * @protected
+ */
+BemWrapper._runAfterCurrentEventFns = function() {
+    var fnsLen = afterCurrentEventFns.length;
+
+    fnsLen && afterCurrentEventFns.splice(0, fnsLen).forEach(function(fnObj) {
+        fnObj.fn.call(fnObj.ctx || this);
+    }, this);
+};
 
 module.exports = BemWrapper;
