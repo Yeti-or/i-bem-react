@@ -3,8 +3,6 @@ var expect = require('chai').expect;
 var React = require('react');
 var BEM = require('..');
 
-var ReactComponent = require('./component.js');
-
 describe('i-bem', () => {
 
 xdescribe('decl', function() {
