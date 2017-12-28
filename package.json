@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "enzyme": "^2.4.1",
+    "enzyme": "^3.3.0",
     "inherit": "^2.2.5",
     "react": "^15.3.1",
     "react-addons-test-utils": "^15.3.1"
